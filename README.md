@@ -1,137 +1,54 @@
-# Smart Traffic Management System Using OMNeT++ and FLoRa
+Overview
+This project presents a smart traffic management system designed and simulated using OMNeT++ and the FLoRa framework. The system dynamically optimizes traffic light control at a four-way intersection by adjusting green light allocation based on real-time traffic queue data.
 
-## 🚦 Overview
-This project simulates a smart traffic management system designed to optimize traffic light control at a crossroad intersection using OMNeT++ and the FLoRa framework. The goal is to minimize vehicle wait times and congestion by dynamically adjusting traffic lights based on real-time sensor data.
+Vehicle arrivals are modeled using a Poisson process to realistically simulate traffic flow randomness. Camera sensors on each road segment monitor queue lengths and report this information every 5 seconds via low-power LoRa wireless communication to a centralized control unit. The control unit processes the incoming data and updates traffic light statuses every 10 seconds, prioritizing the road with the longest vehicle queue.
 
-Camera sensors placed at each road detect the number of waiting vehicles. This data is sent via LoRa (Long Range) communication to a central Control Unit (CU), which determines the optimal traffic light changes. The simulation models realistic vehicle behavior and network performance using stochastic processes such as Poisson distribution and Monte Carlo simulations.
+By incorporating probabilistic traffic models, Monte Carlo simulations, and stochastic processes, the system is able to adapt dynamically to changing traffic conditions, aiming to reduce congestion and improve overall traffic flow efficiency.
 
----
+Features
+Dynamic Traffic Light Control: Traffic light durations adjust in real time according to traffic density.
 
-## 📌 Objectives
-- Dynamically control traffic lights based on vehicle density.
-- Model real-time communication over LoRa between sensors and control unit.
-- Evaluate network and system performance under varying traffic conditions.
-- Simulate realistic vehicle arrivals using Poisson distribution.
-- Analyze results for congestion control and communication efficiency.
+LoRa-based Communication: Lightweight, low-latency wireless communication between sensors and control unit.
 
----
+Realistic Traffic Modeling: Vehicle arrivals follow a Poisson process for randomness and unpredictability.
 
-## 🧠 Key Concepts
+Modular Design: Separate modules for TrafficNodes (road sensors) and a centralized ControlUnit.
 
-- **Poisson Distribution**: Simulates random vehicle arrivals over time.
-- **Monte Carlo Simulation**: Models probabilistic scenarios for signal timing and traffic flow.
-- **Event-Based Simulation**: OMNeT++ is used to simulate discrete events such as arrivals, message transmissions, and traffic light changes.
-- **FLoRa Framework**: Used for implementing LoRa communication between devices in the network.
+Performance Metrics: The system tracks metrics such as average vehicle waiting time, queue lengths, and communication latency to evaluate effectiveness.
 
----
+System Architecture
+TrafficNode Modules: Simulate camera sensors that monitor vehicle queues on each road.
 
-## 🏗️ System Architecture
+ControlUnit Module: Collects sensor data and makes traffic light control decisions.
 
-- **Vehicles**: Random arrivals, tracked with speed, position, and wait time.
-- **Camera Sensors**: Detect vehicle counts every 5 seconds and transmit data via LoRa.
-- **Control Unit (CU)**: Determines optimal traffic light states based on sensor data.
-- **Traffic Lights**: Change dynamically based on decisions from the CU.
-- **LoRa Nodes**: Enable wireless communication with delays and queuing.
+LoRa Communication Channels: Simulate wireless communication between TrafficNodes and the ControlUnit.
 
----
+Simulation Flow
+TrafficNodes initialize with random queue lengths.
 
-## 🧩 Simulation Components
+Every 5 seconds, each TrafficNode sends its current queue length to the ControlUnit.
 
-### Entities
-- Vehicles  
-- Traffic Lights  
-- Camera Sensors  
-- Control Unit  
-- LoRa Gateway & Nodes  
+The ControlUnit collects reports from all roads and every 10 seconds decides which road receives the green light.
 
-### Attributes
-- `Vehicle`: Arrival time, speed, position, wait time  
-- `Traffic Light`: Status (green/red), timer  
-- `Sensor`: Road ID, detection interval, delay  
-- `Control Unit`: Decision logic, timing  
-- `LoRa`: Transmission rate, message queue  
+TrafficNodes receive traffic light status updates and react accordingly.
 
-### Events
-- New vehicle arrival  
-- Sensor captures vehicle count  
-- Message transmission/reception  
-- Traffic light change  
-- Control Unit decision  
+Usage
+The simulation is implemented using OMNeT++ with the FLoRa framework.
 
-### Wait Types
-- **Unconditional**: Traffic light duration (30s), sensor detection (5s)  
-- **Conditional**: Vehicle waits for green, message queue waits, CU waits for all reports  
+Network and module configurations are defined in .ned files.
 
----
+Core logic is implemented in C++ within TrafficSimulation.cc and TrafficSimulation.h.
 
-## 🧪 Tools and Technologies
+Repository
+The full source code and simulation files are available at:
 
-| Tool/Library    | Purpose                                   |
-|----------------|-------------------------------------------|
-| **OMNeT++**     | Discrete event simulation framework       |
-| **FLoRa**       | LoRa protocol modeling and simulation     |
-| **INET Framework** | Optional, for network integration       |
-| **C++ / NED**   | Model definitions and logic               |
+https://github.com/berkayersoz/Traffic-Management-System
 
----
+Future Work
+Integrate a more detailed Poisson-based vehicle arrival model.
 
-## 🗓️ Project Timeline
+Enhance communication delay modeling for LoRa transmissions.
 
-### ✅ Completed Milestones
-- Defined system entities and attributes
-- Modeled events and traffic flow logic
-- Established OMNeT++ simulation structure
-- Designed message passing and delays via LoRa
+Implement vehicle departure modeling based on green light duration.
 
-### 🚧 Remaining Milestones
-- [ ] Implement traffic light control algorithm in OMNeT++
-- [ ] Integrate vehicle and sensor logic with LoRa communication
-- [ ] Test simulation under various traffic conditions
-- [ ] Finalize documentation and prepare simulation results
-
----
-
-## 🏁 Running the Simulation
-
-### Requirements
-- OMNeT++ (v6.0 or compatible)
-- FLoRa framework installed
-- CMake, GCC, or Clang
-
-### Steps
-1. Clone this repository.
-2. Open OMNeT++ IDE.
-3. Import the project and build it.
-4. Run the simulation using the provided `.ini` configuration files.
-5. View output logs, network visuals, and performance metrics.
-
----
-
-## 📊 Output and Results
-
-Expected output includes:
-- Vehicle queue lengths over time
-- Traffic light state transitions
-- LoRa communication delay analysis
-- Graphs showing congestion levels under varying conditions
-
----
-
-## 👥 Team Members
-
-| Name       | Responsibilities                              |
-|------------|-----------------------------------------------|
-| **Berkay** | System architecture, OMNeT++ control logic, LoRa module integration |
-| **Boğaçhan** | Vehicle and sensor modeling, event scheduling, FLoRa communication logic |
-
----
-
-## 📄 License
-This project is for academic use as part of **CNG 476 - System Simulation** at METU NCC. All rights reserved.
-
----
-
-## 📬 Contact
-For questions or collaboration, please contact:
-- Berkay: [ersozberkay2003@gmail.com]
-- Boğaçhan: [bogachanayar@gmail.com]
+Extend the system to multi-intersection traffic networks for broader smart city applications.
